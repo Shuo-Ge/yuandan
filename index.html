@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+
+  <title>新年快乐~</title>
+  <link type="text/css" rel="stylesheet" href="./css/index.css">
+  <script>
+    //判断客户端设备，选择写入meta
+    function init_viewport() {
+      if (navigator.userAgent.indexOf('Android') != -1) {
+        var version = parseFloat(RegExp.$1);
+        if (version > 2.3) {
+          var width = window.outerWidth == 0 ? window.screen.width : window.outerWidth;
+          var phoneScale = parseInt(width) / 500;
+          document.write('<meta name="viewport" content="width=500, minimum-scale = ' + phoneScale + ', maximum-scale = ' + phoneScale + ', target-densitydpi=device-dpi">');
+        } else {
+          document.write('<meta name="viewport" content="width=500, target-densitydpi=device-dpi, user-scalable=0">');
+        }
+      } else if (navigator.userAgent.indexOf('iPhone') != -1) {
+        var phoneScale = parseInt(window.screen.width) / 500;
+        document.write('<meta name="viewport" content="width=500, min-height=750, initial-scale=' + phoneScale + ', maximum-scale=' + phoneScale + ', user-scalable=0" /> ');         //0.75   0.82
+      } else {
+        document.write('<meta name="viewport" content="width=500, height=750, initial-scale=0.64" /> '); //0.75  0.82
+      }
+    }
+    init_viewport();
+  </script>
+  <style>
+    body {
+      margin: 0 auto;
+    }
+
+    #div_is_inner {
+      background: rgba(255, 255, 255, 0.57);
+    }
+  </style>
+
+</head>
+
+<body style="overflow-x:hidden;overflow-y:hidden;">
+
+
+  <script src="./js/jquery.min.js"></script>
+
+
+
+  <div id="div_container">
+    <!-- 最外层div，用于居中兼容PC和移动 -->
+    <div id="div_start_bg"></div> <!-- 用于遮挡主题，作为片头的背景 -->
+    <!-- 按需加载，选择此片头时方才加载 -->
+    <div id="div_intersect"
+      style="display: block;height:100%; background-image: url(&quot;https://20it.cn/static/images/back/0b5cc3e96de5feb412d710d46a448d8b.jpeg&quot;);">
+      <!-- 用于设置背景 -->
+      <div id="div_is_inner">
+        <!-- 用于存放content -->
+        <div class="div_is_open_bg">
+          <div class="div_is_open_btn" onclick="start()" style="background-image: url(./img/open_letter.jpg);"></div>
+        </div>
+
+        <!-- 打字在这里 -->
+        <div class="div_is_typed">
+          <div id="div_is_img">
+            <img class="img_is_typed" src="./img/1671280050523.jpg">
+          </div>
+          <span id="span_is_typed">
+            <div id="box" style="text-align:left;">
+              新年快乐呀
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+    <script>
+      var aaa = $(document).height() + 2;
+
+      $("#div_intersect").css("height", aaa + "px");
+    </script>
+    <div id="div_hearttree">
+      <div id="div_tree_error">很可惜你的手机浏览器不支持，错过了惊喜效果哦</div>
+      <div id="div_tree_start"></div>
+      <div id="div_tree_main">
+        <div id="div_tree_text">
+          <span id="span_tree_typed"></span>
+        </div>
+        <canvas id="canvas_tree" width="500" height="815"></canvas>
+        <div id="div_tree_timer">
+          <span id="span_tree_desc"></span>
+          <div id="div_tree_interval"></div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id='div_btn_container'>
+      <!-- 按钮部分的最外层，处于文档流之中 -->
+      <div id="div_btn_inner">
+        <!-- 按钮部分内层，用于定位 -->
+
+        <div class='div_music_tips'></div>
+        <div class="div_btn" id="div_music" onclick="music_switch()">
+          <audio id="audio_music" autoplay="autoplay" preload="auto" loop>
+            <source src="./music/a7f0acfdff8c46f190864c7a3776893c.m4a" type="audio/mpeg" />
+            <embed id="main_audio_ie8" hidden="true" autostart="true" height="0" width=0 loop="true"
+              src="./music/a7f0acfdff8c46f190864c7a3776893c.m4a" autoplay="autoplay" />
+          </audio>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="./js/type.js"></script>
+
+  <script src="./js/su.js"></script>
+
+  <script type="text/javascript">
+    function start() {
+      $(".div_is_open_bg").hide();
+      $(".div_is_typed").show();
+      audioAutoPlay('audio_music');
+
+      new TypeIt('#box', {
+        lifeLike: true,
+        cursorSpeed: 800,
+        waitUntilVisible: true,
+        speed: 170
+      }).go();
+
+      $('body').wpSuperSnow({
+        flakes: ['./img/004.png', './img/003.png', './img/002.png',
+          './img/001.png'
+        ],
+        totalFlakes: '50',
+        zIndex: '999999',
+        maxSize: '28',
+        maxDuration: '20',
+        useFlakeTrans: false
+      });
+
+    }
+
+    function audioAutoPlay(id) {
+      var audio = document.getElementById(id),
+        play = function () {
+          audio.play();
+          document.removeEventListener("touchstart", play, false);
+        };
+      audio.play();
+      document.addEventListener("WeixinJSBridgeReady", function () {
+        play();
+      }, false);
+      document.addEventListener('YixinJSBridgeReady', function () {
+        play();
+      }, false);
+      document.addEventListener("touchstart", play, false);
+    }
+  </script>
+
+</body>
+
+</html>
